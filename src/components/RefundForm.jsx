@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ref, onValue } from "firebase/database";
 import { db } from "../firebase";
+import { toast, ToastContainer } from "react-toastify";
 
 function CurretForm() {
   const [data, setData] = useState([]);
@@ -14,8 +15,6 @@ function CurretForm() {
   const [showConvertedValue, setShowConvertedValue] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [error, setError] = useState("");
-
   useEffect(() => {
     const dataRef = ref(db, "excelData");
 
@@ -35,10 +34,8 @@ function CurretForm() {
   const handleShow = (e) => {
     e.preventDefault();
     setShowConvertedValue(false);
-    setError("");
-
     if (!fromCurrency || !toCurrency || !amount) {
-      setError("All fields are required.");
+      toast.error("You must enter amount!");
       return;
     }
 
@@ -165,9 +162,6 @@ function CurretForm() {
           <option value="Indian Rupees(INR)">Indian Rupees(INR)</option>
         </select>
       </div>
-
-      {error && <p className="text-red-500 text-lg my-5">{error}</p>}
-
       <div>
         <button
           onClick={handleShow}
@@ -176,8 +170,9 @@ function CurretForm() {
           Show
         </button>
       </div>
-
-      {showConvertedValue && (
+      <>
+      {foundRate?(<>
+        {showConvertedValue && (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
           <table className="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -203,6 +198,9 @@ function CurretForm() {
           </table>
         </div>
       )}
+      </>):(<div className="text-lg my-5">No Data Found!</div>)}
+      </>
+      <ToastContainer/>
     </form>)}
     </>
   );
