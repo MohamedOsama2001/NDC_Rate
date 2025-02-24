@@ -69,18 +69,18 @@ function CurretForm() {
     }
 
     if (amount) {
-      setConvertedValue(
-        (parseFloat(amount) * parseFloat(selectedRate.Value)).toFixed(2)
-      );
+      let result = (parseFloat(amount) * parseFloat(selectedRate.Value)).toFixed(3);
+      setConvertedValue(Number(result));
       setShowConvertedValue(true);
     }
+    
   };
 
   return (
     <>
     {loading?(<div className="text-center text-lg font-semibold mt-5">
           Loading data...
-        </div>):(<form className="max-w-sm md:max-w-lg mx-auto my-10">
+        </div>):(<form className="max-w-sm md:max-w-lg mx-auto my-12">
       <div className="mb-5">
         <label className="block mb-2 text-lg font-medium text-gray-900">
           Select Date

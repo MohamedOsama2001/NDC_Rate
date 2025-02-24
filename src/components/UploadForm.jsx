@@ -9,12 +9,11 @@ function UploadForm() {
   const [excelData, setExcelData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // تحويل التاريخ من Excel Serial Number إلى تنسيق DD/MM/YYYY
+  // تحويل Excel Serial Number إلى تنسيق DD/MM/YYYY
   const excelSerialToDate = (serial) => {
     const utc_days = Math.floor(serial - 25569);
     const date = new Date(utc_days * 86400000);
-    
-    // تنسيق التاريخ ليكون بالشكل "DD/MM/YYYY"
+
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
@@ -53,10 +52,15 @@ function UploadForm() {
               if (typeof value === "number") {
                 value = excelSerialToDate(value);
               } else if (typeof value === "string") {
+                // التأكد من إزالة الوقت إذا كان موجودًا
+                let cleanDate = value.split(" ")[0]; // يأخذ فقط التاريخ بدون الوقت
+
                 // تحويل أي تاريخ موجود بالنمط "YYYY-MM-DD" إلى "DD/MM/YYYY"
-                const dateParts = value.split("-");
+                const dateParts = cleanDate.split("-");
                 if (dateParts.length === 3) {
                   value = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                } else {
+                  value = cleanDate; // إذا كان بالفعل بصيغة صحيحة
                 }
               }
             }
@@ -109,7 +113,7 @@ function UploadForm() {
   };
 
   return (
-    <form className="max-w-sm md:max-w-lg mx-auto mt-20 ">
+    <form className="max-w-sm md:max-w-lg mx-auto mt-24">
       <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white" htmlFor="excel_upload">
         Upload Rate File
       </label>
@@ -127,13 +131,7 @@ function UploadForm() {
           className="text-white bg-gray-900 hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           disabled={loading}
         >
-          {loading ? (
-            <>
-              <span className="text-white">Uploading Now...</span>
-            </>
-          ) : (
-            "Upload"
-          )}
+          {loading ? "Uploading Now..." : "Upload"}
         </button>
       </div>
       <ToastContainer />

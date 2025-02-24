@@ -46,7 +46,7 @@ function CurretForm() {
 
         if (amount) {
           setConvertedValue(
-            (parseFloat(amount) * parseFloat(latestRate.Value)).toFixed(2)
+            parseFloat((parseFloat(amount) * parseFloat(latestRate.Value)).toFixed(3)) 
           );
           setShowConvertedValue(true); // ✅ أظهر القيمة بس لما المستخدم يضغط
         }

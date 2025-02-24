@@ -1,5 +1,5 @@
 import React from 'react'
-import { Nav, UploadForm } from '../components'
+import { Footer, Nav, UploadForm } from '../components'
 
 function UploadPage() {
     return (
