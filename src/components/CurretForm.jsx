@@ -4,8 +4,8 @@ import { db } from "../firebase";
 
 function CurretForm() {
   const [data, setData] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("Egyptian Pound(EGP)");
-  const [toCurrency, setToCurrency] = useState("Egyptian Pound(EGP)");
+  const [fromCurrency, setFromCurrency] = useState("Egyptian Pound");
+  const [toCurrency, setToCurrency] = useState("Egyptian Pound");
   const [latestValue, setLatestValue] = useState([]);
   const [amount, setAmount] = useState("");
   const [convertedValue, setConvertedValue] = useState("");
@@ -46,7 +46,7 @@ function CurretForm() {
 
         if (amount) {
           setConvertedValue(
-            parseFloat((parseFloat(amount) * parseFloat(latestRate.Value)).toFixed(3)) 
+            parseFloat((parseFloat(amount) * parseFloat(latestRate.Value)).toFixed(3))
           );
           setShowConvertedValue(true); // ✅ أظهر القيمة بس لما المستخدم يضغط
         }
@@ -56,87 +56,91 @@ function CurretForm() {
       }
     }
   };
+  useEffect(() => {
+    console.log('data',data)
+    console.log("Updated latestValue:", latestValue);
+  }, [latestValue]);
 
   return (
     <>
-    {loading?(<div className="text-center text-lg font-semibold mt-5">
-          Loading data...
-        </div>):(<form className="max-w-sm md:max-w-lg mx-auto my-10">
-      <div className="mb-5">
-        <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
-          Amount to convert
-        </label>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Enter amount"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        />
-      </div>
+      {loading ? (<div className="text-center text-lg font-semibold mt-5">
+        Loading data...
+      </div>) : (<form className="max-w-sm md:max-w-lg mx-auto my-10">
+        <div className="mb-5">
+          <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
+            Amount to convert
+          </label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Enter amount"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
 
-      <div className="mb-5">
-        <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
-          From currency
-        </label>
-        <select
-          value={fromCurrency}
-          onChange={(e) => setFromCurrency(e.target.value)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        >
-          <option value="Egyptian Pound(EGP)">Egyptian Pound(EGP)</option>
-          <option value="Kuwaiti Dinar(KWD)">Kuwaiti Dinar(KWD)</option>
-          <option value="United States Dollar(USD)">
-            United States Dollar(USD)
-          </option>
-          <option value="Saudi Riyal(SAR)">Saudi Riyal(SAR)</option>
-          <option value="United Arab Emirates Dirham(AED)">
-            United Arab Emirates Dirham(AED)
-          </option>
-          <option value="Euro(EUR)">Euro(EUR)</option>
-          <option value="Libyan Dinar(LYD)">Libyan Dinar(LYD)</option>
-          <option value="Omani Rial(OMR)">Omani Rial(OMR)</option>
-          <option value="Qatari Riyal(QAR)">Qatari Riyal(QAR)</option>
-          <option value="Jordanian Dinar(JOD)">Jordanian Dinar(JOD)</option>
-          <option value="Indian Rupees(INR)">Indian Rupees(INR)</option>
-        </select>
-      </div>
+        <div className="mb-5">
+          <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
+            From currency
+          </label>
+          <select
+            value={fromCurrency}
+            onChange={(e) => setFromCurrency(e.target.value)}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          >
+            <option value="Egyptian Pound">Egyptian Pound(EGP)</option>
+            <option value="Kuwaiti Dinar">Kuwaiti Dinar(KWD)</option>
+            <option value="United States Dollar">
+              United States Dollar(USD)
+            </option>
+            <option value="Saudi Riyal">Saudi Riyal(SAR)</option>
+            <option value="United Arab Emirates Dirham">
+              United Arab Emirates Dirham(AED)
+            </option>
+            <option value="Euro">Euro(EUR)</option>
+            <option value="Libyan Dinar">Libyan Dinar(LYD)</option>
+            <option value="Omani Rial">Omani Rial(OMR)</option>
+            <option value="Qatari Riyal">Qatari Riyal(QAR)</option>
+            <option value="Jordanian Dinar">Jordanian Dinar(JOD)</option>
+            <option value="Indian Rupees">Indian Rupees(INR)</option>
+          </select>
+        </div>
 
-      <div className="mb-5">
-        <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
-          To currency
-        </label>
-        <select
-          value={toCurrency}
-          onChange={(e) => setToCurrency(e.target.value)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        >
-          <option value="Egyptian Pound(EGP)">Egyptian Pound(EGP)</option>
-          <option value="Kuwaiti Dinar(KWD)">Kuwaiti Dinar(KWD)</option>
-          <option value="United States Dollar(USD)">
-            United States Dollar(USD)
-          </option>
-          <option value="Saudi Riyal(SAR)">Saudi Riyal(SAR)</option>
-          <option value="United Arab Emirates Dirham(AED)">
-            United Arab Emirates Dirham(AED)
-          </option>
-          <option value="Euro(EUR)">Euro(EUR)</option>
-          <option value="Libyan Dinar(LYD)">Libyan Dinar(LYD)</option>
-          <option value="Omani Rial(OMR)">Omani Rial(OMR)</option>
-          <option value="Qatari Riyal(QAR)">Qatari Riyal(QAR)</option>
-          <option value="Jordanian Dinar(JOD)">Jordanian Dinar(JOD)</option>
-          <option value="Indian Rupees(INR)">Indian Rupees(INR)</option>
-        </select>
-      </div>
+        <div className="mb-5">
+          <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
+            To currency
+          </label>
+          <select
+            value={toCurrency}
+            onChange={(e) => setToCurrency(e.target.value)}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          >
+            <option value="Egyptian Pound">Egyptian Pound(EGP)</option>
+            <option value="Kuwaiti Dinar">Kuwaiti Dinar(KWD)</option>
+            <option value="United States Dollar">
+              United States Dollar(USD)
+            </option>
+            <option value="Saudi Riyal">Saudi Riyal(SAR)</option>
+            <option value="United Arab Emirates Dirham">
+              United Arab Emirates Dirham(AED)
+            </option>
+            <option value="Euro">Euro(EUR)</option>
+            <option value="Libyan Dinar">Libyan Dinar(LYD)</option>
+            <option value="Omani Rial">Omani Rial(OMR)</option>
+            <option value="Qatari Riyal">Qatari Riyal(QAR)</option>
+            <option value="Jordanian Dinar">Jordanian Dinar(JOD)</option>
+            <option value="Indian Rupees">Indian Rupees(INR)</option>
+          </select>
+        </div>
 
-      <div>
-        <button
-          onClick={handleShow}
-          className="text-white bg-gray-900 hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 font-medium rounded-full text-sm px-5 py-2.5 text-center"
-        >
-          Show
-        </button>
-      </div>
+        <div>
+          <button
+            onClick={handleShow}
+            className="text-white bg-gray-900 hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+          >
+            Show
+          </button>
+        </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
           <table className="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -169,7 +173,7 @@ function CurretForm() {
             </tbody>
           </table>
         </div>
-    </form>)}
+      </form>)}
     </>
   );
 }
